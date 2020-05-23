@@ -7,3 +7,14 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+require 'json'
+
+players = JSON.parse(File.read(Rails.root.join('lib', 'seeds', 'nba_nicknames.json')))
+players.each do |name, alt_names|
+  nba_player = NbaPlayer.create name: name.downcase
+  alt_names.each do |alt_name|
+    nickname = Nickname.find_or_create_by name: alt_name
+    NbaPlayersNickname.create nickname_id: nickname.id, nba_player_id: nba_player.id
+  end
+end

@@ -9,10 +9,24 @@ class NbaController < ApplicationController
     render json: player_data
   end
 
+  def nicknames
+    if players_by_letter_params[:id]
+      @nba_player = NbaPlayer.find(players_by_letter_params[:id])
+    else
+      @nba_player = NbaPlayer.find_by(name: players_by_letter_params[:name])
+    end
+
+    unless @nba_player
+      render json: "No player found", :status => 404
+    else
+      render json: @nba_player.nicknames
+    end
+  end
+
   private
 
   def players_by_letter_params
-    params.permit(:link, :letter)
+    params.permit(:link, :letter, :name, :id)
   end
 
   def nba_scraper_service
