@@ -9,6 +9,10 @@ gem 'puma', '~> 3.11'
 gem 'rack-cors'
 gem 'rails', '~> 5.2.3'
 
+gem 'nokogiri'
+gem 'watir'
+gem 'pry'
+
 gem 'bootsnap', '>= 1.1.0', require: false
 
 group :development, :test do
