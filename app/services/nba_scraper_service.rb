@@ -49,7 +49,9 @@ class NbaScraperService
     rows = table.css('.table_outer_container > .table_container > table > tbody > tr')
     rows.each do |row|
       row_item = {}
-      row_item[headers[0].to_sym] = row.css('th').first.content
+      row_heading = row.css('th')
+      next if row_heading.first.nil?
+      row_item[headers[0].to_sym] = row_heading.first.content
       
       row.css('td').each_with_index do |node, index|
         row_item[headers[index + 1].to_sym] = node.content
