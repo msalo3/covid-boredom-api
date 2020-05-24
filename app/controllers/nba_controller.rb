@@ -9,6 +9,11 @@ class NbaController < ApplicationController
     render json: player_data
   end
 
+  def player_image
+    player_data = nba_scraper_service.player_image(players_by_letter_params[:name])
+    render json: player_data
+  end
+
   def nicknames
     if players_by_letter_params[:id]
       @nba_player = NbaPlayer.find(players_by_letter_params[:id])

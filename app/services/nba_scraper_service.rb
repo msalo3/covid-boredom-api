@@ -8,6 +8,10 @@ class NbaScraperService
   def initialize
   end
 
+  def browser
+    @browser ||= Watir::Browser.new
+  end
+
   def players_by_letter(letter)
     url = "https://www.basketball-reference.com/players/#{letter}"
     Rails.logger.info url
@@ -61,5 +65,15 @@ class NbaScraperService
     end
 
     data
+  end
+
+  def player_image(name)
+    url = "https://www.google.com/search?tbm=isch&q=#{name}"
+    Rails.logger.info url
+    doc = Nokogiri::HTML(open(url, :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE))
+    image_arr = doc.css('img').slice(1, 4)
+    image_arr.map do |arrs|
+      arrs.attr('src')
+    end
   end
 end
