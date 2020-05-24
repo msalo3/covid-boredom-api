@@ -14,17 +14,15 @@ class NbaScraperService
 
   def players_by_letter(letter)
     url = "https://www.basketball-reference.com/players/#{letter}"
-    Rails.logger.info url
     doc = Nokogiri::HTML(open(url, :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE))
 
     cells = []
     doc.search('//tr').each_with_index do |cell, index|
-      Rails.logger.info cell if index == 1
       next if index == 0
       obj = {}
       name_cell = cell.search('//th')[index + 7]
       obj[:name] = name_cell.content
-      obj[:link] = name_cell.children.first['href']
+      obj[:link] = name_cell.css('a').attr('href').value
       vals = cell.search('//td').map do |node|
         key = node['data-stat']
         obj[key.to_sym] = node.content
@@ -67,11 +65,11 @@ class NbaScraperService
     data
   end
 
-  def player_image(name)
+  def player_image(name, amt=3)
     url = "https://www.google.com/search?tbm=isch&q=#{name}"
-    Rails.logger.info url
     doc = Nokogiri::HTML(open(url, :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE))
-    image_arr = doc.css('img').slice(1, 4)
+    image_amount = amt ? amt.to_i + 1 : 4
+    image_arr = doc.css('img').slice(1, image_amount)
     image_arr.map do |arrs|
       arrs.attr('src')
     end
