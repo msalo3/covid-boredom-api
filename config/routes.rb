@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :cards
   resources :chats
 
   get '/nba/players_by_letter/:letter', to: 'nba#players_by_letter'

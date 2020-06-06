@@ -12,9 +12,13 @@ require 'json'
 
 players = JSON.parse(File.read(Rails.root.join('lib', 'seeds', 'nba_nicknames.json')))
 players.each do |name, alt_names|
-  nba_player = NbaPlayer.create name: name.downcase
+  nba_player = NbaPlayer.find_or_create_by name: name.downcase
   alt_names.each do |alt_name|
     nickname = Nickname.find_or_create_by name: alt_name
-    NbaPlayersNickname.create nickname_id: nickname.id, nba_player_id: nba_player.id
+    NbaPlayersNickname.find_or_create_by nickname_id: nickname.id, nba_player_id: nba_player.id
   end
+end
+
+['Anniversary/Wedding', 'Blank Art Cards', 'Sympathy', 'Birthday', 'Holiday', 'Baby'].each do |cat|
+  Category.find_or_create_by name: cat
 end
