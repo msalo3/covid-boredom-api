@@ -20,28 +20,29 @@ players.each do |name, alt_names|
   end
 end
 
-['Anniversary/Wedding', 'Blank Art Cards', 'Sympathy', 'Birthday', 'Holiday', 'Baby'].each do |cat|
+['Wedding/Anniversary', 'Blank Art Cards', 'Sympathy', 'Birthday', 'Holiday', 'Baby'].each do |cat|
   Category.find_or_create_by name: cat
 end
 
 CSV.foreach(File.join(Rails.root, 'db','cards','cardinfo.csv')).with_index(4) do |row, i|
-	next if [14, 15, 16, 17, 18, 19].include?(i.to_i)
-
 	card = Card.create_with(
 		info: row[3],
-		vertical: (row[2] || "").downcase == "vertical",
-		sold: (row[4] || "").downcase == "true",
-		main_image: (row[5] || "").downcase == "true"
-	).find_or_create_by(name: row[1],)
-	
+		vertical: (row[2].gsub(/\s+/, "") || "").downcase == "vertical",
+		sold: (row[4].gsub(/\s+/, "") || "").downcase == "true",
+    main_image: (row[5].gsub(/\s+/, "") || "").downcase == "true"
+  ).find_or_create_by(name: row[1])
+  
+  cats = []
 	if row[6]
-		cat = Category.find_by(name: row[6]) 
-		card.categories << cat if cat
+		cat = Category.find_by(name: row[6])
+		cats << cat if cat
 	end
 	if row[7]
 		cat2 = Category.find_by(name: row[7])
-		card.categories << cat2 if cat2
-	end
+		cats << cat2 if cat2
+  end
+  card.categories = cats
+  card.save
 
 	unless card.image.attached?
 		card.image.attach(

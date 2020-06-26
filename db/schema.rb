@@ -46,12 +46,17 @@ ActiveRecord::Schema.define(version: 2020_06_05_213610) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "cards_categories", id: false, force: :cascade do |t|
+    t.bigint "card_id"
+    t.bigint "category_id"
+    t.index ["card_id"], name: "index_cards_categories_on_card_id"
+    t.index ["category_id"], name: "index_cards_categories_on_category_id"
+  end
+
   create_table "categories", force: :cascade do |t|
     t.string "name"
-    t.bigint "card_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["card_id"], name: "index_categories_on_card_id"
   end
 
   create_table "chats", force: :cascade do |t|
@@ -89,6 +94,5 @@ ActiveRecord::Schema.define(version: 2020_06_05_213610) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "categories", "cards"
   add_foreign_key "messages", "chats"
 end

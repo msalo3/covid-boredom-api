@@ -6,6 +6,10 @@ class CardSerializer < ActiveModel::Serializer
     object.updated_at.to_date
   end
 
+  def categories
+    object.categories.map { |cat| cat.name }
+  end
+
   def image
     return unless object.image.attached?
 

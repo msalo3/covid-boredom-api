@@ -26,9 +26,9 @@ class CardsController < ApplicationController
 
   # PATCH/PUT /cards/1
   def update
-    if @params[:image] && !file?(@params[:image])
+    if (card_params[:image] && !file?(card_params[:image]))
       delete_image if @card.image.attached?
-      @params.delete(:image)
+      card_params.delete(:image)
     end
     if @card.update(card_params)
       render json: @card
@@ -50,7 +50,7 @@ class CardsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def card_params
-      params.require(:card).permit(:name, :info, :vertical, :sold, :main_image, :image)
+      params.permit(:name, :info, :vertical, :sold, :main_image, :image, :image_action)
     end
 
     def file?(param)
