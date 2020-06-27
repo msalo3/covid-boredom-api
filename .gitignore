@@ -25,3 +25,4 @@
 # Ignore the local database.yml
 /config/database.yml
 
+*.env

@@ -15,6 +15,8 @@ gem 'pry'
 
 gem 'bootsnap', '>= 1.1.0', require: false
 
+gem "aws-sdk-s3", require: false
+
 gem 'active_model_serializers'
 
 group :development, :test do
