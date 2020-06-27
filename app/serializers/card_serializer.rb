@@ -20,6 +20,6 @@ class CardSerializer < ActiveModel::Serializer
   end
 
   def image_url
-    url_for(object.image)
+    object.image.service_url
   end
 end
