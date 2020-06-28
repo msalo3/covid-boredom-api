@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   resources :cards
   resources :chats
 
+  post '/contact_form', to: 'form#contact_form'
+
   get '/nba/players_by_letter/:letter', to: 'nba#players_by_letter'
 
   get '/nba/player_by_link', to: 'nba#player_by_link'
