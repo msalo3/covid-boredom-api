@@ -1,5 +1,5 @@
 class FormMailer < ApplicationMailer
-  default from: 'artcardspgh@example.com', to: 'marcsalo455@gmail.com'
+  default from: ENV['GMAIL_EMAIL'], to: ENV['GMAIL_EMAIL_TO']
  
   def contact_email
     @name = params[:name]
