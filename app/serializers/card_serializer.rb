@@ -20,6 +20,7 @@ class CardSerializer < ActiveModel::Serializer
   end
 
   def image_url
+    return url_for(object.image) if Rails.env.development?
     object.image.service_url
   end
 end
