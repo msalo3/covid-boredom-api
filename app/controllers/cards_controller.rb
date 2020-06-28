@@ -15,7 +15,16 @@ class CardsController < ApplicationController
 
   # POST /cards
   def create
-    @card = Card.new(card_params)
+    cats = grab_categories(card_params[:categories])
+    @card = Card.new(
+      name: card_params[:name],
+      info: card_params[:info],
+      vertical: card_params[:vertical],
+      sold: card_params[:sold],
+      main_image: card_params[:main_image],
+      image: card_params[:image],
+      categories: cats
+    )
 
     if @card.save
       render json: @card, status: :created, location: @card
@@ -30,7 +39,18 @@ class CardsController < ApplicationController
       delete_image if @card.image.attached?
       card_params.delete(:image)
     end
-    if @card.update(card_params)
+
+    cats = grab_categories(card_params[:categories])
+    if @card.update(
+      {name: card_params[:name],
+      info: card_params[:info],
+      vertical: card_params[:vertical],
+      sold: card_params[:sold],
+      main_image: card_params[:main_image],
+      image: card_params[:image],
+      categories: cats
+      }.compact!
+    )
       render json: @card
     else
       render json: @card.errors, status: :unprocessable_entity
@@ -50,7 +70,7 @@ class CardsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def card_params
-      params.permit(:name, :info, :vertical, :sold, :main_image, :image, :image_action)
+      params.permit(:id, :name, :info, :vertical, :sold, :main_image, :image, :categories)
     end
 
     def file?(param)
@@ -59,5 +79,15 @@ class CardsController < ApplicationController
   
     def delete_image
       @card.image.purge
+    end
+
+    def grab_categories(arr)
+      cats = []
+      arr.split(',').each do |name|
+        cat = Category.where("lower(name) = ?", name.downcase).first
+        cats << cat if cat
+      end
+      puts "Categories: #{cats}"
+      cats
     end
 end
