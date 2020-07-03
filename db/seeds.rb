@@ -20,7 +20,7 @@ players.each do |name, alt_names|
   end
 end
 
-['Wedding/Anniversary', 'Blank Art Cards', 'Sympathy', 'Birthday', 'Holiday', 'Baby', 'Graduation'].each do |cat|
+['Wedding/Anniversary', 'Blank Art Cards', 'Sympathy', 'Birthday', 'Holiday', 'Baby', 'Graduation', 'Greeting Cases'].each do |cat|
   Category.find_or_create_by name: cat
 end
 
