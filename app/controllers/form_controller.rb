@@ -3,13 +3,19 @@ class FormController < ApplicationController
     @name = form_params[:name]
     @email = form_params[:email]
     @message = form_params[:msg]
-    FormMailer.with(name: @name, email: @email, message: @message).contact_email.deliver_later
+    @cards = cards(form_params[:card_ids])
+    FormMailer.with(name: @name, email: @email, message: @message, cards: @cards).contact_email.deliver_later
     render json: @cards
   end
 
   private
-    # Only allow a trusted parameter "white list" through.
-    def form_params
-      params.permit(:name, :email, :msg)
-    end
+
+  # Only allow a trusted parameter "white list" through.
+  def form_params
+    params.permit(:name, :email, :msg, card_ids: [])
+  end
+
+  def cards(ids)
+    ids.map { |id| Card.find(id) }
+  end
 end

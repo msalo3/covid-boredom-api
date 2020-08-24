@@ -8,3 +8,12 @@ Someone contacted you about Cards!
 <%= @message %>
 
 You can reach them at <%= @email %>
+
+===============================================
+
+They were interested in: 
+<% @cards.each do |card| %>
+  ID: <%= card.id %>
+  Name: <%= card.name %>
+  Info: <%= card.info %>
+<% end %>

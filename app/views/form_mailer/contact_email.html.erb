@@ -10,5 +10,13 @@
     <p><%= @name %> filled out the form with the following message:</p>
     <p><%= @message %></p>
     <p>You can reach them at <%= @email %></p>
+    <br/>
+    <p>They were interested in: </p>
+    <% @cards.each do |card| %>
+      <p>ID: <%= card.id %></p>
+      <p>Name: <%= card.name %></p>
+      <p>Info: <%= card.info %></p>
+      <br/>
+    <% end %>
   </body>
 </html>

@@ -5,6 +5,7 @@ class FormMailer < ApplicationMailer
     @name = params[:name]
     @email = params[:email]
     @message = params[:message]
+    @cards = params[:cards]
     mail(subject: 'Art Cards PGH message')
   end
 end
