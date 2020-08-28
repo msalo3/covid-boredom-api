@@ -22,3 +22,5 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+heroku container:push web --app marc-app-api
+heroku container:release web
